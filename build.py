@@ -584,6 +584,35 @@ def build_meta_files():
     (OUT / "CNAME").write_text(C.SITE_URL.split("://", 1)[1] + "\n")
 
 
+def apply_public_base():
+    """Prefix root-relative site URLs when deployed as a GitHub Pages project site."""
+    base = os.environ.get("PUBLIC_BASE", "").strip().rstrip("/")
+    if not base:
+        return
+    patterns = [
+        (r'(\b(?:href|src|action)=\")/(?!/)', lambda m: m.group(1) + base + "/"),
+        (r'(\burl\(\")/(?!/)', lambda m: m.group(1) + base + "/"),
+        (r'(\bfetch\(\")/(?!/)', lambda m: m.group(1) + base + "/"),
+    ]
+    for f in OUT.rglob("*"):
+        if not f.is_file() or f.name == "CNAME":
+            continue
+        if f.suffix.lower() not in {".html", ".css", ".js", ".json", ".webmanifest", ".txt"}:
+            continue
+        try:
+            text = f.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for pat, repl in patterns:
+            text = re.sub(pat, repl, text)
+        # Generated manifest/search index and JS may contain plain root-relative URLs.
+        if f.name == "site.webmanifest":
+            text = text.replace('"start_url": "/"', '"start_url": "' + base + '/"')
+        if f.name == "search-index.json":
+            text = re.sub(r'("u":\s*)"/(?!/)', lambda m: m.group(1) + '"' + base + '/', text)
+        f.write_text(text, encoding="utf-8")
+
+
 def main():
     check_links()
     if OUT.exists():
@@ -604,6 +633,7 @@ def main():
     build_search()
     build_404()
     build_meta_files()
+    apply_public_base()
     print(f"Built {len(PAGES_OUT)} pages, {len(TOOLS)} tools, {len(ARTICLES)} articles into {OUT}")
 
 

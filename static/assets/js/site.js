@@ -25,7 +25,7 @@
   /* ---------- Search ---------- */
   var indexPromise = null;
   function loadIndex() {
-    if (!indexPromise) indexPromise = fetch("/search-index.json").then(function (r) { return r.json(); }).catch(function () { return []; });
+    if (!indexPromise) indexPromise = fetch((window.GSS_BASE || "/") + "search-index.json").then(function (r) { return r.json(); }).catch(function () { return []; });
     return indexPromise;
   }
 

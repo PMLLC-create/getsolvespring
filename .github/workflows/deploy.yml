@@ -27,6 +27,8 @@ jobs:
           python-version: "3.12"
       - run: pip install markdown
       - run: python3 build.py
+        env:
+          PUBLIC_BASE: /getsolvespring
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

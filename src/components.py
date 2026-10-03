@@ -57,6 +57,7 @@ def head(title, description, path, jsonld=None, og_type="website", extra=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>window.GSS_BASE = "/getsolvespring/";</script>
 <title>{e(full_title)}</title>
 <meta name="description" content="{e(description)}">
 <link rel="canonical" href="{e(url)}">
