@@ -11,6 +11,7 @@ static host (Cloudflare Pages, GitHub Pages, Netlify, etc.).
 import datetime
 import json
 import math
+import os
 import re
 import shutil
 import sys
