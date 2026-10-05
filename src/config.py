@@ -18,7 +18,7 @@ FORM_ENDPOINT = ""
 
 # Advertising. Leave ADSENSE_CLIENT empty until AdSense approves the site.
 # When approved, paste your publisher ID, e.g. "ca-pub-1234567890123456".
-ADSENSE_CLIENT = ""
+ADSENSE_CLIENT = "ca-pub-3660643369348384"
 # True shows dashed boxes where ads will go (useful for layout review only).
 SHOW_AD_SLOTS = False
 
